@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SCS取得ラボ｜要求項目を専門家が動画で解説</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Inter:wght@500;600;800&display=swap" rel="stylesheet">
+<style>
+/* ================= トークン ================= */
+:root{
+  --bg:#FFFFFF;
+  --bg-soft:#F3F7FE;
+  --bg-tint:#EAF1FF;
+  --ink:#0C1D3D;
+  --ink-sub:#4E5D78;
+  --line:#E1E8F3;
+  --brand:#1F5FE6;
+  --brand-deep:#1446C2;
+  --brand-tint:#E6EEFF;
+  --brand-ink:#FFFFFF;
+  --ok:#14915A;
+  --dark:#0C1D3D;
+  --dark-text:#F2F6FF;
+  --shadow:0 1px 2px rgba(12,29,61,.04),0 8px 24px rgba(12,29,61,.06);
+  --r-lg:20px;
+  --r-md:14px;
+  --sans:"Noto Sans JP","Noto Sans CJK JP","Hiragino Sans",sans-serif;
+  --latin:"Inter","Noto Sans JP",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    color-scheme:dark;
+    --bg:#0B1322;
+    --bg-soft:#0F192C;
+    --bg-tint:#14213A;
+    --ink:#E9EFFA;
+    --ink-sub:#A4B1C7;
+    --line:#22314C;
+    --brand:#6C9BFF;
+    --brand-deep:#8DB1FF;
+    --brand-tint:#1A2B4D;
+    --brand-ink:#0B1322;
+    --ok:#5BD49A;
+    --dark:#14213A;
+    --dark-text:#E9EFFA;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.3);
+  }
+}
+
+/* ================= ベース ================= */
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{font-family:var(--sans);color:var(--ink);background:var(--bg);line-height:1.8;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img{display:block;max-width:100%;height:auto}
+.wrap > *{min-width:0}
+:focus-visible{outline:2px solid var(--brand);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+section{padding:112px 0}
+.soft{background:var(--bg-soft)}
+.eyebrow{display:flex;align-items:center;gap:16px;font-family:var(--latin);font-weight:600;font-size:.78rem;letter-spacing:.28em;color:var(--brand);margin-bottom:18px}
+.eyebrow::after{content:"";width:48px;height:1.5px;background:currentColor}
+.eyebrow.center{justify-content:center}
+h2{font-size:clamp(1.8rem,3.6vw,2.6rem);font-weight:900;line-height:1.4;letter-spacing:-.01em;text-wrap:balance}
+.lead{color:var(--ink-sub);font-size:1.02rem;margin-top:18px;max-width:36em}
+.center{text-align:center}
+.center .lead{margin-left:auto;margin-right:auto}
+.hl{color:var(--brand)}
+.card{background:var(--bg);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow)}
+.ico{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.ico-wrap{width:64px;height:64px;border-radius:50%;background:var(--brand-tint);color:var(--brand);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ico-wrap .ico{width:28px;height:28px}
+.img-soft{border-radius:var(--r-lg);overflow:hidden}
+
+/* ボタン：フラットなピル型 */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:12px;height:56px;padding:0 30px;border-radius:999px;font-weight:700;font-size:1rem;text-decoration:none;border:1.5px solid transparent;cursor:pointer;font-family:inherit;white-space:nowrap;transition:background-color .15s,border-color .15s,color .15s}
+.btn .ico{width:18px;height:18px}
+.btn-primary{background:var(--brand);color:var(--brand-ink)}
+.btn-primary:hover{background:var(--brand-deep)}
+.btn-outline{background:var(--bg);color:var(--brand);border-color:var(--brand)}
+.btn-outline:hover{background:var(--brand-tint)}
+.btn-row{display:flex;flex-wrap:wrap;gap:14px}
+
+.img-ph{width:100%;border:1.5px dashed color-mix(in srgb,var(--brand) 40%,var(--line));border-radius:var(--r-md);background:color-mix(in srgb,var(--brand-tint) 55%,transparent);color:var(--ink-sub);display:flex;align-items:center;justify-content:center;text-align:center;font-size:.9rem;font-weight:700;padding:8px;overflow:hidden}
+.img-ph small{display:block;font-size:.75rem;font-weight:500;margin-top:2px}
+.problem .img-ph{width:160px;height:112px;aspect-ratio:auto!important;margin:0 auto 20px}
+.thumb .img-ph{width:96px;flex-shrink:0;font-size:.7rem;padding:4px}
+.thumb .img-ph small{display:none}
+.move .img-ph{width:150px;flex-shrink:0}
+.cta-inner .img-ph{justify-self:end;width:min(100%,400px);margin:0 24px 24px 0}
+.ex-head .img-ph{justify-self:end;width:min(100%,340px)}
+.hero .visual.img-ph{-webkit-mask-image:none;mask-image:none;margin-right:0}
+.c-left .operator.img-ph{width:180px}
+
+/* ================= ヘッダー ================= */
+.head{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.head .wrap{display:flex;align-items:center;height:68px;gap:24px}
+.logo{font-weight:900;font-size:1.35rem;text-decoration:none;color:var(--brand);letter-spacing:-.01em}
+.head nav{margin-left:auto;display:flex;gap:30px;font-size:.88rem;color:var(--ink-sub)}
+.head nav a{text-decoration:none}
+.head nav a:hover{color:var(--brand)}
+.head .btn{height:44px;padding:0 22px;font-size:.88rem}
+
+/* ================= ① FV ================= */
+.hero{padding:80px 0 96px;background:linear-gradient(180deg,var(--bg-tint) 0%,var(--bg) 100%);overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center}
+.hero .tagline{display:inline-block;color:var(--brand);font-weight:700;font-size:1.3rem;padding-bottom:12px;border-bottom:2px solid var(--brand)}
+.hero h1{font-size:clamp(3rem,6.6vw,5rem);font-weight:900;line-height:1.1;letter-spacing:-.03em;margin:24px 0 20px;white-space:nowrap}
+.hero h1 .scs{color:var(--brand);font-family:var(--latin);font-weight:800;letter-spacing:-.04em}
+.hero .desc{font-size:1.15rem;color:var(--ink-sub);line-height:1.75}
+.price-line{display:flex;align-items:baseline;gap:6px;margin:24px 0 32px;font-weight:700}
+.price-line b{font-family:var(--latin);font-size:2.6rem;font-weight:800;color:var(--brand);letter-spacing:-.02em;line-height:1;margin:0 2px}
+.price-line small{font-size:.9rem;color:var(--ink-sub);font-weight:500}
+.hero-points{display:flex;gap:0;margin-top:40px;font-size:.82rem;color:var(--ink-sub);line-height:1.5}
+.hero-points li{display:flex;align-items:center;gap:10px;list-style:none;padding:0 16px;white-space:nowrap}
+.hero-points li:first-child{padding-left:0}
+.hero-points li+li{border-left:1px solid var(--line)}
+.hero-points .ico{color:var(--ink);width:26px;height:26px}
+.hero .visual{border-radius:var(--r-lg)}
+
+/* ================= ② ABOUT ================= */
+.about .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.about h2 .scs{color:var(--brand)}
+.about .statement{font-size:clamp(1.25rem,2.4vw,1.6rem);font-weight:700;line-height:1.6;margin-top:24px}
+.about .statement .star{color:var(--brand)}
+
+/* ================= ③ PROBLEM ================= */
+.problems{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+.problem{padding:28px 32px 32px;text-align:left}
+.problem img{height:112px;width:auto;margin:0 auto 20px}
+.problem p{font-size:1.02rem;line-height:1.8;font-weight:500}
+.solution{margin-top:96px;text-align:center}
+.solution p:not(.eyebrow){font-size:clamp(1.4rem,3vw,2.1rem);font-weight:900;line-height:1.5;letter-spacing:-.01em}
+.chev{width:28px;height:28px;margin:24px auto 0;color:var(--brand)}
+
+/* ================= ④ FEATURE ================= */
+.feature-card{display:grid;grid-template-columns:1.6fr 1fr;gap:28px;padding:24px;margin-top:48px}
+.feature-card .video{border-radius:var(--r-md);overflow:hidden;position:relative}
+.about img,.consult img{border-radius:var(--r-lg)}
+.problem img{border-radius:12px}
+.chap-side{display:flex;flex-direction:column;padding:8px 8px 0 0}
+.pill{display:inline-block;align-self:flex-start;background:var(--brand-tint);color:var(--brand);font-weight:700;font-size:.82rem;border-radius:999px;padding:4px 14px}
+.chap-side h3{font-size:1.25rem;font-weight:900;margin:12px 0 14px}
+.chap{list-style:none;flex:1}
+.chap li{display:grid;grid-template-columns:40px 1fr;padding:9px 14px;font-size:.92rem;border-left:2px solid transparent;color:var(--ink-sub)}
+.chap li span{font-family:var(--latin);font-weight:600;color:var(--ink-sub)}
+.chap li.now{background:var(--brand-tint);border-left-color:var(--brand);color:var(--brand);font-weight:700;border-radius:0 8px 8px 0}
+.chap li.now span{color:var(--brand)}
+.free{display:flex;align-items:center;gap:14px;margin-top:16px;padding:14px 18px;border-radius:var(--r-md);background:var(--brand-tint);color:var(--brand);font-weight:700;font-size:.92rem;line-height:1.5;text-decoration:none}
+.free .play{width:36px;height:36px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.free .play::after{content:"";border-left:11px solid var(--brand-ink);border-top:7px solid transparent;border-bottom:7px solid transparent;margin-left:3px}
+.points-title{margin-top:72px;font-size:clamp(1.3rem,2.4vw,1.7rem);font-weight:900;text-align:center}
+.points3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:28px}
+.point{display:flex;gap:20px;padding:28px}
+.point h3{font-size:1.15rem;font-weight:900;color:var(--brand)}
+.point p{font-size:.92rem;color:var(--ink-sub);margin-top:6px;line-height:1.75}
+
+/* ================= ⑤ TOOLS ================= */
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:48px}
+.tool{padding:32px;display:flex;flex-direction:column}
+.tool-head{display:flex;gap:18px;align-items:flex-start;margin-bottom:24px}
+.tool-head h3{font-size:1.3rem;font-weight:900}
+.tool-head p{font-size:.92rem;color:var(--ink-sub);margin-top:2px}
+.tool .shot{margin-top:auto;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+
+/* ================= ⑥ CTAバンド ================= */
+.cta-band{padding:0}
+.cta-inner{display:grid;grid-template-columns:1.15fr 1fr;align-items:end;gap:32px;padding-top:72px;border-radius:28px;background:var(--bg-tint);overflow:hidden}
+.cta-inner .txt{padding:0 0 72px 64px}
+.cta-inner h2{font-size:clamp(1.4rem,2.4vw,1.8rem)}
+.cta-inner .btn-row{margin-top:32px}
+.cta-inner img{justify-self:end;width:min(100%,400px)}
+
+/* ================= ⑦ 解説例 ================= */
+.ex-head{display:grid;grid-template-columns:1.5fr 1fr;gap:32px;align-items:end}
+.ex-head .rule{width:72px;height:3px;background:var(--brand);margin-bottom:24px}
+.ex-head img{justify-self:end;width:min(100%,340px)}
+.compare{display:grid;grid-template-columns:1fr 48px 1fr;margin-top:24px;align-items:stretch}
+.side{border-radius:var(--r-lg);overflow:hidden;display:flex;flex-direction:column}
+.side-head{display:flex;align-items:center;gap:14px;padding:20px 28px;font-weight:900;font-size:1.2rem}
+.side-body{padding:24px 28px 32px;flex:1}
+.src{border:1px solid var(--line);background:var(--bg)}
+.src .side-head{background:var(--bg-soft)}
+.req-no{background:var(--bg-soft);border-radius:10px;padding:12px 16px;font-weight:900;font-size:1.1rem;margin-bottom:18px}
+.src ul{list-style:none;font-size:.98rem;line-height:1.85}
+.src > .side-body > ul > li{padding-left:1.1em;position:relative}
+.src > .side-body > ul > li::before{content:"";position:absolute;left:0;top:.8em;width:5px;height:5px;border-radius:50%;background:var(--ink)}
+.src ul ul{margin-top:10px;color:var(--ink-sub);font-size:.92rem}
+.src ul ul li{padding:3px 0 3px 1em;position:relative}
+.src ul ul li::before{content:"";position:absolute;left:0;top:1.05em;width:8px;height:1px;background:var(--ink-sub)}
+.arrow{display:flex;align-items:center;justify-content:center;color:var(--brand)}
+.arrow .ico{width:30px;height:30px;stroke-width:2.4}
+.out{border:1.5px solid var(--brand);background:var(--bg)}
+.out .side-head{background:var(--brand);color:var(--brand-ink)}
+.out .side-body{background:var(--bg-tint)}
+.out .pill{display:inline-flex;align-items:center;gap:8px;background:var(--brand);color:var(--brand-ink);padding:8px 18px;font-size:.92rem}
+.out .pill .ico{width:18px;height:18px}
+.out p{font-size:1.12rem;line-height:2;margin-top:18px;font-weight:500}
+.out p strong{color:var(--brand);font-weight:900}
+.strip{margin-top:32px;padding:36px 40px}
+.strip h3{text-align:center;font-size:1.25rem;font-weight:900}
+.strip-items{display:grid;grid-template-columns:repeat(3,1fr);margin-top:28px}
+.strip-items > div{display:flex;gap:18px;align-items:center;padding:0 24px}
+.strip-items > div+div{border-left:1px solid var(--line)}
+.strip-items h4{font-size:1.1rem;font-weight:900}
+.strip-items p{font-size:.88rem;color:var(--ink-sub);line-height:1.6}
+
+/* ================= ⑧ 動画コンテンツ ================= */
+.contents .wrap.top{display:grid;grid-template-columns:1fr 1.1fr;gap:48px;align-items:center}
+.contents .label{color:var(--brand);font-weight:700;display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.contents .label::after{content:"";width:56px;height:1.5px;background:currentColor}
+.carousel-title{margin-top:48px;font-weight:700;font-size:1rem}
+.carousel{margin-top:16px;position:relative;min-width:0}
+.track{display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 4px 12px;scrollbar-width:none}
+.track::-webkit-scrollbar{display:none}
+.thumb{flex:0 0 300px;scroll-snap-align:start;display:flex;gap:14px;align-items:center;padding:12px;border-radius:var(--r-md);background:var(--bg);border:1.5px solid var(--line);text-decoration:none}
+.thumb.on{border-color:var(--brand)}
+.thumb img{width:112px;border-radius:8px;flex-shrink:0}
+.thumb b{display:block;font-family:var(--latin);font-weight:600;font-size:.88rem}
+.thumb span{font-size:.88rem;line-height:1.55;color:var(--ink-sub)}
+.nav-btn{position:absolute;top:50%;transform:translateY(-60%);width:44px;height:44px;border-radius:50%;background:var(--bg);border:1px solid var(--line);box-shadow:var(--shadow);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink)}
+.nav-btn.prev{left:-22px}
+.nav-btn.next{right:-22px}
+.try{margin-top:72px;text-align:center}
+.try p{font-size:1.2rem;font-weight:700}
+.try .btn-row{justify-content:center;margin-top:24px}
+
+/* ================= ⑨ 料金 ================= */
+.price .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.price h2{font-size:clamp(2.2rem,4.6vw,3.4rem)}
+.big-price{display:flex;align-items:baseline;gap:8px;margin:28px 0 8px;font-weight:700;font-size:1.3rem}
+.big-price b{font-family:var(--latin);font-size:clamp(3.4rem,7vw,5rem);font-weight:800;color:var(--brand);letter-spacing:-.03em;line-height:1}
+.big-price small{font-size:1rem;color:var(--ink-sub);font-weight:500}
+.stars{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 32px;font-size:.88rem}
+.stars span{border-radius:999px;padding:4px 14px;font-weight:700}
+.stars .on{background:var(--brand-tint);color:var(--brand)}
+.stars .soon{border:1px dashed var(--line);color:var(--ink-sub);font-weight:500}
+.offer{padding:28px}
+.offer h3{font-size:1rem;font-weight:700;color:var(--brand);background:var(--bg-tint);border-radius:10px;padding:10px 18px}
+.offer ul{list-style:none;margin-top:12px}
+.offer li{display:flex;gap:18px;align-items:center;padding:18px 10px;border-bottom:1px solid var(--line)}
+.offer li:last-child{border-bottom:none}
+.offer .ico-wrap{width:52px;height:52px}
+.offer h4{font-size:1.05rem;font-weight:900}
+.offer p{font-size:.88rem;color:var(--ink-sub);line-height:1.6}
+
+/* ================= ⑩ 監修者 ================= */
+.sv{display:grid;grid-template-columns:300px 1fr;gap:56px;align-items:start;margin-top:40px}
+.sv .photo{border-radius:var(--r-lg);overflow:hidden}
+.sv .name{font-size:2rem;font-weight:900;letter-spacing:.06em}
+.sv .bio{color:var(--ink-sub);margin-top:14px}
+.quote{margin-top:28px;padding:28px 32px;border-radius:var(--r-lg);background:var(--bg-tint);font-size:1.05rem;line-height:1.9;position:relative}
+.quote::before{content:"\201C";font-family:Georgia,serif;font-size:3.4rem;line-height:1;color:var(--brand);position:absolute;left:18px;top:6px;opacity:.6}
+.quote p{padding-left:24px}
+
+/* ================= ⑪ コンサル ================= */
+.consult .wrap.top{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.consult .btn{margin-top:32px}
+.consult h2,.contents h2{font-size:clamp(1.6rem,2.8vw,2.2rem)}
+.move{margin-top:80px;display:flex;align-items:center;justify-content:center;gap:32px;padding:40px 32px;text-align:center;border-radius:24px;background:var(--bg-tint)}
+.move img{width:150px}
+.move p{font-size:clamp(1.15rem,2.4vw,1.55rem);font-weight:900;line-height:1.6}
+
+/* ================= ⑫ お問い合わせ ================= */
+.contact .wrap{display:grid;grid-template-columns:1fr 1.4fr;gap:56px;align-items:start}
+.contact h2{font-size:clamp(2.4rem,5vw,3.6rem);line-height:1.2}
+.contact .lead{font-size:1.15rem;color:var(--ink)}
+.c-left{position:relative}
+.c-points{list-style:none;margin-top:40px;display:grid;gap:20px;position:relative;z-index:1}
+.c-points li{display:flex;align-items:center;gap:16px;font-weight:500;line-height:1.5}
+.c-points .ico-wrap{width:56px;height:56px;background:var(--bg);box-shadow:var(--shadow)}
+.c-left .operator{position:absolute;right:0;top:220px;width:180px;-webkit-mask-image:linear-gradient(0deg,transparent 0,#000 60px);mask-image:linear-gradient(0deg,transparent 0,#000 60px)}
+form.card{padding:36px;display:grid;gap:20px}
+fieldset{border:none}
+legend,.field label{display:flex;align-items:center;gap:8px;font-weight:700;font-size:.92rem;margin-bottom:8px}
+.req{font-size:.7rem;font-weight:700;color:#D33A3A;border:1px solid #F1B5B5;border-radius:4px;padding:1px 6px;line-height:1.5}
+.types{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.types label{cursor:pointer;position:relative}
+.types input{position:absolute;opacity:0}
+.types span{display:flex;align-items:center;gap:10px;height:58px;padding:0 14px;border:1.5px solid var(--line);border-radius:12px;font-size:.86rem;line-height:1.35}
+.types span::before{content:"";width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line);flex-shrink:0;box-sizing:border-box}
+.types input:checked+span{border-color:var(--brand);background:var(--brand-tint);font-weight:700}
+.types input:checked+span::before{border:5px solid var(--brand)}
+.types input:focus-visible+span{outline:2px solid var(--brand);outline-offset:2px}
+.field input,.field textarea{width:100%;height:50px;padding:0 16px;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit;font-size:.95rem}
+.field textarea{height:120px;padding:12px 16px;resize:vertical}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--brand)}
+.field input::placeholder,.field textarea::placeholder{color:#94A0B4}
+.agree{display:flex;align-items:center;gap:10px;font-size:.9rem}
+.agree input{width:20px;height:20px;accent-color:var(--brand)}
+.agree a{color:var(--brand)}
+form .btn{width:100%;height:60px}
+.form-msg{min-height:1.5em;font-size:.9rem;font-weight:700;text-align:center}
+
+/* ================= ⑬ 運営会社 ================= */
+.company .wrap{display:grid;grid-template-columns:1.5fr 1fr;gap:40px;align-items:end}
+.company .lead{color:var(--ink);font-weight:700;font-size:1.15rem}
+.ov{margin-top:32px;padding:8px 28px}
+.ov dl{display:grid;grid-template-columns:110px 1fr}
+.ov dt,.ov dd{padding:16px 0;border-bottom:1px solid var(--line);font-size:.95rem}
+.ov dt{font-weight:700}
+.ov dl > :nth-last-child(-n+2){border-bottom:none}
+.ov dd a{color:var(--brand);display:inline-flex;align-items:center;gap:6px}
+.ov dd a .ico{width:16px;height:16px}
+.company .building{border-radius:var(--r-lg);overflow:hidden;object-fit:cover}
+
+footer{border-top:1px solid var(--line);padding:28px 0}
+footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:.85rem;color:var(--ink-sub)}
+footer nav{display:flex;gap:24px}
+footer nav a{text-decoration:none}
+
+/* ================= レスポンシブ ================= */
+@media (max-width:960px){
+  section{padding:80px 0}
+  .wrap{padding:0 20px}
+  .head nav{display:none}
+  main .btn{white-space:normal;height:auto;min-height:56px;padding:12px 24px;text-align:center}
+  .head .btn{margin-left:auto;padding:0 14px;font-size:.78rem;height:40px}
+  .head .btn .ico{display:none}
+  .logo{font-size:1.15rem}
+  .hero .visual{margin-right:0}
+  .hero{padding:48px 0 64px}
+  .hero .wrap,.about .wrap,.ex-head,.contents .wrap.top,.price .wrap,.consult .wrap.top,.contact .wrap,.company .wrap,.cta-inner{grid-template-columns:1fr}
+  .hero h1{white-space:normal}
+  .hero .visual{margin-right:-20px}
+  .hero-points{flex-direction:column;gap:14px}
+  .hero-points li,.hero-points li+li{padding:0;border-left:none}
+  .problems,.points3,.tools,.strip-items{grid-template-columns:1fr}
+  .strip-items{gap:20px}
+  .strip-items > div,.strip-items > div+div{padding:0;border-left:none}
+  .feature-card{grid-template-columns:1fr}
+  .compare{grid-template-columns:1fr}
+  .arrow{height:48px}
+  .arrow .ico{transform:rotate(90deg)}
+  .cta-inner{padding-top:40px}
+  .cta-inner .txt{padding:0 24px}
+  .cta-inner img{justify-self:center}
+  .ex-head img{justify-self:start;max-width:260px}
+  .sv{grid-template-columns:1fr}
+  .sv .photo{max-width:260px}
+  .move{flex-direction:column;text-align:center}
+  .c-left .operator{display:none}
+  .types{grid-template-columns:1fr}
+  .nav-btn{display:none}
+  form.card{padding:24px 18px}
+}
+
+/* ================= FV：画像を背景として溶け込ませる ================= */
+.hero{position:relative;isolation:isolate;padding:96px 0 104px}
+.hero .wrap{grid-template-columns:minmax(0,600px) 1fr}
+.hero .wrap > div{position:relative;z-index:2}
+.hero .visual{position:absolute;z-index:0;top:0;right:0;bottom:0;width:64%;height:100%;object-fit:cover;object-position:60% 40%;border-radius:0;margin:0;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.25) 18%,rgba(0,0,0,.85) 45%,#000 65%),linear-gradient(0deg,transparent 0%,#000 22%);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.25) 18%,rgba(0,0,0,.85) 45%,#000 65%),linear-gradient(0deg,transparent 0%,#000 22%);
+  mask-composite:intersect}
+/* 文字の背面にやわらかい光を置き、読みやすさを確保 */
+.hero::before{content:"";position:absolute;z-index:1;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,var(--bg-tint) 0%,color-mix(in srgb,var(--bg-tint) 85%,transparent) 32%,color-mix(in srgb,var(--bg-tint) 20%,transparent) 52%,transparent 66%)}
+.hero::after{content:"";position:absolute;z-index:1;right:-10%;top:-20%;width:60%;height:80%;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(56,130,246,.18),transparent);mix-blend-mode:multiply}
+@media (max-width:960px){
+  .hero{padding:48px 0 0}
+  .hero .wrap{grid-template-columns:1fr}
+  .hero .visual{position:relative;max-width:none;width:calc(100% + 40px);height:auto;margin:8px -20px 0;aspect-ratio:4/3;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 30%);-webkit-mask-composite:source-over;
+    mask-image:linear-gradient(180deg,transparent 0%,#000 30%);mask-composite:add}
+  .hero::before{background:linear-gradient(180deg,var(--bg-tint) 0%,transparent 60%)}
+  .hero::after{display:none}
+}
+
+/* ================= スマートフォン最適化 ================= */
+@media (max-width:960px){
+  h2,.statement,.solution p{word-break:auto-phrase}
+  /* FV：画像を右側に配置し、文字の背面へ溶け込ませる */
+  .hero{padding:40px 0 48px}
+  .hero .visual{position:absolute;z-index:0;top:36px;right:0;left:auto;width:62%;height:400px;max-width:none;margin:0;aspect-ratio:auto;
+    object-fit:cover;object-position:78% 45%;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.5) 35%,#000 75%),linear-gradient(0deg,transparent 0%,#000 40%),linear-gradient(180deg,transparent 0%,#000 15%);
+    -webkit-mask-composite:source-in;
+    mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.5) 35%,#000 75%),linear-gradient(0deg,transparent 0%,#000 40%),linear-gradient(180deg,transparent 0%,#000 15%);
+    mask-composite:intersect}
+  .hero::before{background:linear-gradient(90deg,var(--bg-tint) 0%,color-mix(in srgb,var(--bg-tint) 96%,transparent) 55%,color-mix(in srgb,var(--bg-tint) 60%,transparent) 76%,color-mix(in srgb,var(--bg-tint) 10%,transparent) 100%)}
+  .hero .desc{max-width:15em}
+  .hero .tagline{font-size:1.05rem}
+  .hero h1{font-size:2.9rem}
+  .hero .desc{font-size:1rem}
+  .hero .btn-row .btn{width:100%}
+
+  /* CTAバンド：見出しの右に画像、ボタンは下に横幅いっぱい */
+  .cta-inner{grid-template-columns:1fr 42%;grid-template-areas:"h img" "b b";align-items:center;gap:16px 12px;padding:28px 20px 24px}
+  .cta-inner .txt{display:contents}
+  .cta-inner h2{grid-area:h;font-size:1.1rem;line-height:1.55;word-break:auto-phrase}
+  .cta-inner h2 br{display:none}
+  .cta-inner img,.cta-inner .img-ph{grid-area:img;width:100%;justify-self:end;align-self:center;border-radius:10px}
+  .cta-inner .btn-row{grid-area:b;margin-top:4px;flex-direction:column}
+  .cta-inner .btn-row .btn{width:100%}
+
+  /* 解説例：専門家のイラストを中央に */
+  .ex-head img,.ex-head .img-ph{justify-self:center;width:min(100%,240px);margin-top:8px}
+
+  /* コンサル：イメージ画像を小さく */
+  .consult .wrap.top > img,.consult .wrap.top > .img-ph{width:min(100%,240px);justify-self:center}
+
+  /* お問い合わせ：3つのポイントを横並びに */
+  .c-points{grid-template-columns:repeat(3,1fr);gap:8px;margin-top:28px}
+  .c-points li{flex-direction:column;text-align:center;gap:8px;font-size:.78rem;line-height:1.45;padding:14px 4px;border-radius:12px;background:var(--bg)}
+  .c-points .ico-wrap{width:40px;height:40px;box-shadow:none;background:var(--brand-tint)}
+  .c-points .ico-wrap .ico{width:20px;height:20px}
+  .c-points br{display:none}
+  .c-points li{word-break:auto-phrase}
+  main .btn{font-size:.92rem;padding:12px 18px}
+
+  /* 運営会社：画像を小さく */
+  .company .building{width:min(100%,220px);max-height:260px;object-fit:cover;justify-self:center}
+}
+
+/* ================= スマートフォン最適化（追加） ================= */
+@media (max-width:960px){
+  /* FV：3つのポイントを横並びに */
+  .hero-points{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:28px}
+  .hero-points li,.hero-points li+li{flex-direction:column;align-items:center;text-align:center;gap:6px;padding:12px 4px;border-left:none;border-radius:12px;
+    background:color-mix(in srgb,var(--bg) 75%,transparent);font-size:.72rem;line-height:1.45;white-space:normal}
+  .hero-points .ico{width:22px;height:22px;color:var(--brand)}
+
+  /* ABOUT：画像を小さく */
+  .about .wrap > img,.about .wrap > .img-ph{width:min(100%,240px);justify-self:center}
+
+  /* 監修者：写真を見出しの右側に */
+  .sv-wrap{display:grid;grid-template-columns:1fr 112px;column-gap:16px;grid-template-areas:"eb ph" "h ph" "body body"}
+  .sv-wrap > .eyebrow{grid-area:eb;align-self:end;margin-bottom:8px}
+  .sv-wrap > h2{grid-area:h;align-self:start}
+  .sv-wrap .sv{display:contents}
+  .sv-wrap .sv .photo{grid-area:ph;width:112px;max-width:none;align-self:center;border-radius:14px}
+  .sv-wrap .sv > div:last-child{grid-area:body;margin-top:24px}
+}
+
+/* ================= カラーリング：白ベース × 薄ブルー × オレンジ ================= */
+/* 端末がダークモードでも、白ベースのまま表示する */
+:root,
+:root:not(.x){
+  color-scheme:light;
+  --bg:#FFFFFF;
+  --bg-soft:#F3F8FF;
+  --bg-tint:#E9F3FF;
+  --ink:#24344F;
+  --ink-sub:#5D6C86;
+  --line:#E2EBF6;
+  --brand:#2B7BE4;
+  --brand-deep:#1F67CC;
+  --brand-tint:#E8F2FF;
+  --brand-ink:#FFFFFF;
+  --accent:#FF8A3D;
+  --accent-deep:#F2701F;
+  --accent-tint:#FFF2E8;
+  --dark:#24344F;
+  --dark-text:#FFFFFF;
+  --shadow:0 1px 2px rgba(43,123,228,.05),0 8px 24px rgba(43,123,228,.08);
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    color-scheme:light;
+    --bg:#FFFFFF; --bg-soft:#F3F8FF; --bg-tint:#E9F3FF;
+    --ink:#24344F; --ink-sub:#5D6C86; --line:#E2EBF6;
+    --brand:#2B7BE4; --brand-deep:#1F67CC; --brand-tint:#E8F2FF; --brand-ink:#FFFFFF;
+    --dark:#24344F; --dark-text:#FFFFFF;
+    --shadow:0 1px 2px rgba(43,123,228,.05),0 8px 24px rgba(43,123,228,.08);
+  }
+}
+
+/* 主ボタン：オレンジ */
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-deep)}
+.btn-outline{background:#fff;color:var(--brand);border-color:var(--brand)}
+.btn-outline:hover{background:var(--brand-tint)}
+
+/* アクセント：オレンジ */
+.hero .tagline{border-bottom-color:var(--accent)}
+.price-line b,.big-price b{color:var(--accent)}
+.about .statement .star{color:var(--accent)}
+.stars .on{background:var(--accent-tint);color:var(--accent-deep)}
+.chev{color:var(--accent)}
+.free .play{background:var(--accent)}
+.free{background:var(--accent-tint);color:var(--accent-deep)}
+.carousel .thumb.on{border-color:var(--accent)}
+.ex-head .rule{background:var(--accent)}
+.out .pill{background:var(--accent)}
+.problems .card{border-top:3px solid var(--accent)}
+.quote::before{color:var(--accent)}
+
+/* やわらかい背景 */
+.soft{background:var(--bg-soft)}
+.cta-inner{background:linear-gradient(120deg,#E3F0FF 0%,#F2F8FF 60%,#FFF4EB 100%)}
+.move{background:linear-gradient(120deg,#E8F3FF 0%,#FFF4EB 100%)}
+.hero{background:linear-gradient(180deg,#EAF4FF 0%,#FFFFFF 100%)}
+.hero::before{background:linear-gradient(90deg,#EAF4FF 0%,rgba(234,244,255,.85) 32%,rgba(234,244,255,.2) 52%,transparent 66%)}
+@media (max-width:960px){
+  .hero::before{background:linear-gradient(90deg,#EAF4FF 0%,rgba(234,244,255,.96) 55%,rgba(234,244,255,.6) 76%,rgba(234,244,255,.1) 100%)}
+}
+footer{background:var(--bg-soft)}
+
+/* ================= 背景の青を白に寄せる ================= */
+:root,:root:not(.x){--bg-soft:#F8FBFF;--bg-tint:#F2F8FF;--brand-tint:#EEF5FF;--line:#E8EEF6}
+@media (prefers-color-scheme: dark){:root{--bg-soft:#F8FBFF;--bg-tint:#F2F8FF;--brand-tint:#EEF5FF;--line:#E8EEF6}}
+.soft,footer{background:var(--bg-soft)}
+.hero{background:linear-gradient(180deg,#F3F9FF 0%,#FFFFFF 100%)}
+.hero::before{background:linear-gradient(90deg,#F3F9FF 0%,rgba(243,249,255,.85) 32%,rgba(243,249,255,.2) 52%,transparent 66%)}
+@media (max-width:960px){
+  .hero::before{background:linear-gradient(90deg,#F3F9FF 0%,rgba(243,249,255,.96) 55%,rgba(243,249,255,.6) 76%,rgba(243,249,255,.1) 100%)}
+}
+.cta-inner{background:linear-gradient(120deg,#F0F7FF 0%,#F8FBFF 60%,#FFF8F2 100%)}
+.move{background:linear-gradient(120deg,#F2F8FF 0%,#FFF8F2 100%)}
+
+/* お悩み：イラストを大きく */
+.problem img{height:168px;width:auto;max-width:100%;margin:0 auto 20px}
+@media (max-width:960px){.problem img{height:150px}}
+</style>
+</head>
+<body>
+
+<!-- アイコン -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="play-c" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m10 8.5 5 3.5-5 3.5z"/></symbol>
+  <symbol id="monitor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></symbol>
+  <symbol id="doc" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></symbol>
+  <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="chart" viewBox="0 0 24 24"><path d="M6 20v-6M12 20V9M18 20V4"/></symbol>
+  <symbol id="bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="m8.5 12 2.5 2.5 4.5-5"/></symbol>
+  <symbol id="gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-2.8 1.2V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 7.3 19.7l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.7 1.7 0 0 0 3.1 14H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.2-2.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.7 1.7 0 0 0 10 3.1V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 2.9 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0 1.2 2.9H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+  <symbol id="user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+  <symbol id="chat" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.4A8 8 0 1 1 21 12z"/><path d="M8.5 11h.01M12 11h.01M15.5 11h.01"/></symbol>
+  <symbol id="chev-l" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></symbol>
+  <symbol id="chev-r" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+  <symbol id="chev-dd" viewBox="0 0 24 24"><path d="m6 5 6 6 6-6M6 12l6 6 6-6"/></symbol>
+  <symbol id="ext" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+</svg>
+
+<header class="head">
+  <div class="wrap">
+    <a href="#" class="logo">SCS取得ラボ</a>
+    <nav aria-label="ページ内リンク">
+      <a href="#feature">サービス</a>
+      <a href="#examples">解説の例</a>
+      <a href="#price">料金</a>
+      <a href="#contact">申し込み・お問い合わせ</a>
+    </nav>
+    <a href="#contact" class="btn btn-primary">申し込み・お問い合わせ<svg class="ico"><use href="#arrow"/></svg></a>
+  </div>
+</header>
+
+<main>
+
+<!-- ① FV -->
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <p class="tagline">要求項目を専門家が動画で解説！</p>
+      <h1><span class="scs">SCS</span>取得ラボ</h1>
+      <p class="desc">専門家が要求項目のポイントと<br>達成基準を詳しく解説します。</p>
+      <p class="price-line">月額<b>10,000</b>円<small>（税抜）</small></p>
+      <div class="btn-row">
+        <a href="#contact" class="btn btn-primary">申し込み・お問い合わせ<svg class="ico"><use href="#arrow"/></svg></a>
+        <a href="#feature" class="btn btn-outline">サンプル動画を見る<svg class="ico"><use href="#play-c"/></svg></a>
+      </div>
+      <ul class="hero-points">
+        <li><svg class="ico"><use href="#monitor"/></svg>専門家による<br>わかりやすい解説</li>
+        <li><svg class="ico"><use href="#doc"/></svg>全ての要求項目を<br>動画で網羅</li>
+        <li><svg class="ico"><use href="#clock"/></svg>いつでもどこでも<br>繰り返し視聴可能</li>
+      </ul>
+    </div>
+    <img class="visual" src="image01.png" width="1000" height="980" alt="SCS評価制度の解説動画をノートPCで視聴している様子">
+  </div>
+</section>
+
+<!-- ② ABOUT -->
+<section class="about">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">ABOUT</p>
+      <h2><span class="scs">SCS取得ラボ</span>とは？</h2>
+      <p class="statement">SCS評価制度の<span class="star">★</span>取得を、<br>自社で進めるための支援サービスです。</p>
+      <p class="lead">経済産業省の解説書をふまえ、専門家が要求項目を動画で詳しく解説。何をどこまで対応すればいいのかわかります。</p>
+    </div>
+    <img src="image02.png" width="1000" height="760" alt="専門家の解説動画をパソコンで視聴するイラスト" loading="lazy">
+  </div>
+</section>
+
+<!-- ③ PROBLEM -->
+<section class="soft">
+  <div class="wrap center">
+    <p class="eyebrow center">PROBLEM</p>
+    <h2>SCS評価制度の対応について、<br>こんなお悩みはありませんか？</h2>
+    <div class="problems">
+      <div class="card problem"><img src="image03.png" width="320" height="224" alt="" loading="lazy"><p>SCS評価制度の★取得の話が出たけれど、何をすればいいかわからない</p></div>
+      <div class="card problem"><img src="image04.png" width="320" height="224" alt="" loading="lazy"><p>コンサルタントに依頼する前に、自社でどこまでできるか検討したい</p></div>
+      <div class="card problem"><img src="image05.png" width="320" height="224" alt="" loading="lazy"><p>SCS評価制度の対応を進めているが、方法が合っているか専門家の知見がほしい</p></div>
+    </div>
+    <div class="solution">
+      <p class="eyebrow center">SOLUTION</p>
+      <p>SCS取得ラボなら、<br>要求項目の詳しい解説を動画で確認できます。</p>
+      <svg class="ico chev" aria-hidden="true"><use href="#chev-dd"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- ④ FEATURE -->
+<section id="feature">
+  <div class="wrap">
+    <p class="eyebrow">FEATURE</p>
+    <h2>要求項目のポイントと達成基準を、専門家が動画で解説</h2>
+    <div class="card feature-card">
+      <div class="video"><img src="image06.png" width="1280" height="720" alt="サンプル動画「SCS評価制度の解説」" loading="lazy"></div>
+      <div class="chap-side">
+        <span class="pill">サンプル動画</span>
+        <h3>要求事項 No.【○】の解説</h3>
+        <ol class="chap">
+          <li class="now"><span>01</span>はじめに</li>
+          <li><span>02</span>求められていること</li>
+          <li><span>03</span>達成基準</li>
+          <li><span>04</span>よくある間違い</li>
+          <li><span>05</span>まとめ</li>
+        </ol>
+        <a href="#contact" class="free"><span class="play"></span>まずは1本、<br>無料でご覧いただけます。</a>
+      </div>
+    </div>
+    <h3 class="points-title">動画を見るとこんなことが分かります</h3>
+    <div class="points3">
+      <div class="card point"><span class="ico-wrap"><svg class="ico"><use href="#doc"/></svg></span><div><h3>求められていること</h3><p>要求項目の意図を、わかりやすい言葉で解説します。</p></div></div>
+      <div class="card point"><span class="ico-wrap"><svg class="ico"><use href="#chart"/></svg></span><div><h3>達成基準</h3><p>どこまでやれば十分か、判断の基準を示します。</p></div></div>
+      <div class="card point"><span class="ico-wrap"><svg class="ico"><use href="#bulb"/></svg></span><div><h3>よくある間違い</h3><p>誤解しやすい部分と、その避け方を紹介します。</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑤ TOOLS -->
+<section class="soft">
+  <div class="wrap">
+    <p class="eyebrow">TOOLS</p>
+    <h2>対応を進めるためのツールも使えます</h2>
+    <div class="tools">
+      <div class="card tool">
+        <div class="tool-head"><span class="ico-wrap"><svg class="ico"><use href="#check"/></svg></span><div><h3>対応チェックシート</h3><p>自社の対応状況を項目ごとに確認できます。</p></div></div>
+        <img class="shot" src="image07.png" width="1280" height="720" alt="対応チェックシートの達成度集計画面" loading="lazy">
+      </div>
+      <div class="card tool">
+        <div class="tool-head"><span class="ico-wrap"><svg class="ico"><use href="#doc"/></svg></span><div><h3>対応テンプレート</h3><p>規程や台帳のひな形を、記入例付きで用意しています。</p></div></div>
+        <img class="shot" src="image08.png" width="1280" height="720" alt="情報セキュリティ関連規程のテンプレート" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑥ CTAバンド -->
+<section class="cta-band">
+  <div class="wrap">
+    <div class="cta-inner">
+      <div class="txt">
+        <h2>動画・チェックシート・<br>テンプレートで、<br>自社対応を支援</h2>
+        <div class="btn-row">
+          <a href="#contact" class="btn btn-primary">申し込み・お問い合わせ<svg class="ico"><use href="#arrow"/></svg></a>
+          <a href="#price" class="btn btn-outline">料金を見る</a>
+        </div>
+      </div>
+      <img src="image11.png" width="800" height="550" alt="SCS評価制度の要求項目一覧と全体像を解説する動画の画面" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ⑦ 解説の例 -->
+<section id="examples">
+  <div class="wrap">
+    <div class="ex-head">
+      <div>
+        <div class="rule"></div>
+        <h2>経済産業省の解説書をふまえ、<br>専門家がこのように解説します。</h2>
+        <p class="lead">難解な要求事項を、実務に落とし込んだ「達成のポイント」として、専門家がわかりやすく解説します。</p>
+      </div>
+      <img src="image09.png" width="680" height="500" alt="" loading="lazy">
+    </div>
+
+    <div class="compare">
+      <div class="side src">
+        <div class="side-head"><svg class="ico"><use href="#doc"/></svg>解説書の記載</div>
+        <div class="side-body">
+          <p class="req-no">要求事項 No.1-1-1-1</p>
+          <ul>
+            <li>セキュリティに関連する以下の事項を把握した上で、社内ルールを定めること。
+              <ul>
+                <li>自社に関連する法令（事業法、個人情報保護法等）</li>
+                <li>所管省庁及び関係団体における基準</li>
+                <li>取引先が提示する制限事項及び要求事項</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="arrow" aria-hidden="true"><svg class="ico"><use href="#chev-r"/></svg></div>
+      <div class="side out">
+        <div class="side-head"><svg class="ico"><use href="#user"/></svg>専門家の解説</div>
+        <div class="side-body">
+          <span class="pill"><svg class="ico"><use href="#bulb"/></svg>達成のポイント</span>
+          <p><strong>「セキュリティの基本方針」が文書化・承認されている。</strong>必要なこと（<strong>目的・範囲・体制</strong>などが書かれ、<strong>社長がOKしている</strong>）が全て書かれ、<strong>対象全体に適用</strong>され、<strong>決まりどおりに運用した記録</strong>（申請書等）もある</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card strip">
+      <h3>このような解説を、全要求項目について動画でご覧いただけます。</h3>
+      <div class="strip-items">
+        <div><span class="ico-wrap"><svg class="ico"><use href="#bulb"/></svg></span><div><h4>ポイント</h4><p>達成に必要な要点をやさしく解説</p></div></div>
+        <div><span class="ico-wrap"><svg class="ico"><use href="#doc"/></svg></span><div><h4>判断基準</h4><p>評価されるための具体的な基準を提示</p></div></div>
+        <div><span class="ico-wrap"><svg class="ico"><use href="#gear"/></svg></span><div><h4>実務対応</h4><p>社内での進め方や作成資料の例も紹介</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑧ 動画コンテンツの一例 -->
+<section class="soft contents">
+  <div class="wrap top">
+    <div>
+      <p class="label">動画コンテンツの一例</p>
+      <h2>各要求項目を専門家が<br>動画でわかりやすく解説。</h2>
+      <p class="lead">経済産業省の解説書をもとに、現場経験のある専門家が、図や具体例を交えながら丁寧に解説。何をどこまで対応すればよいのか、迷わず理解できます。</p>
+    </div>
+    <img src="image13.png" width="1060" height="680" alt="要求事項No.3-1-1-4「情報資産の台帳管理」の解説動画" loading="lazy">
+  </div>
+  <div class="wrap">
+    <p class="carousel-title">No.3-1-1-4「情報資産の台帳管理」の動画の内容</p>
+    <div class="carousel">
+      <button class="nav-btn prev" type="button" aria-label="前の動画"><svg class="ico"><use href="#chev-l"/></svg></button>
+      <div class="track" id="track">
+        <a href="#contact" class="thumb on"><img src="image14.png" width="320" height="180" alt="" loading="lazy"><div><b>01</b><span>求められていること</span></div></a>
+        <a href="#contact" class="thumb"><img src="image15.png" width="320" height="180" alt="" loading="lazy"><div><b>02</b><span>達成基準</span></div></a>
+        <a href="#contact" class="thumb"><img src="image16.png" width="320" height="180" alt="" loading="lazy"><div><b>03</b><span>よくある間違い</span></div></a>
+        <a href="#contact" class="thumb"><img src="image17.png" width="320" height="180" alt="" loading="lazy"><div><b>04</b><span>対応の進め方（実務のステップ）</span></div></a>
+      </div>
+      <button class="nav-btn next" type="button" aria-label="次の動画"><svg class="ico"><use href="#chev-r"/></svg></button>
+    </div>
+    <div class="try">
+      <p>まずはサンプル動画で、専門家の解説のわかりやすさをご体感ください。</p>
+      <div class="btn-row">
+        <a href="#feature" class="btn btn-outline">サンプル動画を見る<svg class="ico"><use href="#play-c"/></svg></a>
+        <a href="#contact" class="btn btn-primary">申し込み・お問い合わせ<svg class="ico"><use href="#arrow"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑨ 料金 -->
+<section class="price" id="price">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">PRICE</p>
+      <h2>料金プラン</h2>
+      <p class="lead">SCS取得に必要な要求項目の解説から、対応に使えるテンプレートまで、すべてを月額でご利用いただけます。</p>
+      <p class="big-price">月額<b>10,000</b>円<small>（税抜）</small></p>
+      <div class="stars"><span class="on">★3 対応</span><span class="soon">★4 はアップデートプランとして開発中</span></div>
+      <a href="#contact" class="btn btn-primary">申し込み・お問い合わせ<svg class="ico"><use href="#arrow"/></svg></a>
+    </div>
+    <div class="card offer">
+      <h3>SCS取得ラボの提供内容</h3>
+      <ul>
+        <li><span class="ico-wrap"><svg class="ico"><use href="#play-c"/></svg></span><div><h4>全要求項目の解説動画</h4><p>専門家が要求項目のポイントをわかりやすく動画で解説</p></div></li>
+        <li><span class="ico-wrap"><svg class="ico"><use href="#check"/></svg></span><div><h4>対応チェックシート</h4><p>自社の対応状況を整理・確認できるチェックシートをご提供</p></div></li>
+        <li><span class="ico-wrap"><svg class="ico"><use href="#doc"/></svg></span><div><h4>対応テンプレート（記入例付き）</h4><p>実際の対応に使える各種テンプレートと記入例を収録</p></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ⑩ 監修者 -->
+<section class="soft">
+  <div class="wrap sv-wrap">
+    <p class="eyebrow">SUPERVISOR</p>
+    <h2>監修者</h2>
+    <div class="sv">
+      <div class="photo img-ph" style="aspect-ratio:280/294" role="img" aria-label="画像を入れます：監修者の写真"><span>画像を入れます<small>監修者の写真</small></span></div>
+      <div>
+        <p class="name">小井土 崇</p>
+        <p class="bio">100名規模の化粧品メーカーの一人システム部部長を務める。CRMに興味関心を持ち、Salesforce開発・運用・保守を対応。「Log4jShell」脆弱性の対応を行った際、中堅企業のセキュリティ強靭化が急務であると感じ2026年より現職。社内外のSCS評価制度推進に従事。CIS Benchmarks Communitiesメンバー、サイバー防犯ボランティア(警察庁)メンバー</p>
+        <div class="quote"><p>「何をすればいいのかわからない」「自分たちの対応が合っているか」という不安を多くお聞きします。これまで研究してきた要求項目の判断ポイントや間違えやすい点を、わかりやすくお伝えします。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑪ コンサル -->
+<section class="consult">
+  <div class="wrap top">
+    <div>
+      <p class="eyebrow">CONSULTING</p>
+      <h2>自社で進めるのが難しい場合は、<br>弊社へご相談ください。</h2>
+      <p class="lead">自社での対応が難しくなった場合は、弊社のコンサルタントに対応をご依頼いただけます。動画で学んだ内容を活かしながら、★取得までのコンサルティングや実行支援まで行わせていただきます。</p>
+      <a href="#contact" class="btn btn-primary" data-type="consult">コンサルティングについて問い合わせる<svg class="ico"><use href="#arrow"/></svg></a>
+    </div>
+    <img src="image10.png" width="1020" height="910" alt="コンサルタントに相談しているイラスト" loading="lazy">
+  </div>
+  <div class="wrap">
+    <div class="move">
+      <p>必要に応じて、<br>自社対応から個別支援へスムーズに移行できます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ⑫ 申し込み・お問い合わせ -->
+<section class="soft contact" id="contact">
+  <div class="wrap">
+    <div class="c-left">
+      <p class="eyebrow">CONTACT</p>
+      <h2>申し込み・<br>お問い合わせ</h2>
+      <p class="lead">不明点がありましたら、<br>お気軽にご相談ください。</p>
+      <ul class="c-points">
+        <li><span class="ico-wrap"><svg class="ico"><use href="#chat"/></svg></span>専門家が<br>わかりやすく回答</li>
+        <li><span class="ico-wrap"><svg class="ico"><use href="#clock"/></svg></span>通常1〜2営業日<br>以内にご返信</li>
+        <li><span class="ico-wrap"><svg class="ico"><use href="#doc"/></svg></span>ご相談だけでも<br>お気軽にどうぞ</li>
+      </ul>
+    </div>
+    <form class="card" id="contactForm" novalidate>
+      <fieldset>
+        <legend>お問い合わせ種別<span class="req">必須</span></legend>
+        <div class="types">
+          <label><input type="radio" name="type" value="apply" checked><span>申し込み</span></label>
+          <label><input type="radio" name="type" value="question"><span>サービスについての質問</span></label>
+          <label><input type="radio" name="type" value="consult"><span>コンサルティングの相談</span></label>
+        </div>
+      </fieldset>
+      <div class="field"><label for="company">会社名<span class="req">必須</span></label><input id="company" name="company" autocomplete="organization" placeholder="例）株式会社サンプル" required></div>
+      <div class="field"><label for="name">お名前<span class="req">必須</span></label><input id="name" name="name" autocomplete="name" placeholder="例）山田 太郎" required></div>
+      <div class="field"><label for="tel">電話番号<span class="req">必須</span></label><input id="tel" name="tel" type="tel" autocomplete="tel" placeholder="例）03-1234-5678" required></div>
+      <div class="field"><label for="email">メールアドレス<span class="req">必須</span></label><input id="email" name="email" type="email" autocomplete="email" placeholder="例）taro.yamada@sample.co.jp" required></div>
+      <div class="field"><label for="message">ご質問・ご相談内容</label><textarea id="message" name="message" placeholder="ご質問・ご相談内容をご入力ください"></textarea></div>
+      <label class="agree"><input type="checkbox" id="agree"><span><a href="#">利用規約</a>と<a href="#">プライバシーポリシー</a>に同意する</span></label>
+      <button type="submit" class="btn btn-primary">送信する<svg class="ico"><use href="#arrow"/></svg></button>
+      <p class="form-msg" id="formMsg" role="status"></p>
+    </form>
+  </div>
+</section>
+
+<!-- ⑬ 運営会社 -->
+<section class="company">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">COMPANY</p>
+      <h2>運営会社</h2>
+      <p class="lead">中堅・中小企業のバックオフィスとDXを支援してきた、<br>辻・本郷 ITコンサルティングが運営しています。</p>
+      <div class="card ov">
+        <dl>
+          <dt>会社名</dt><dd>辻・本郷 ITコンサルティング株式会社</dd>
+          <dt>代表者</dt><dd>代表取締役社長 黒仁田 健</dd>
+          <dt>所在地</dt><dd>東京都渋谷区代々木1-36-4 全理連ビル5階</dd>
+          <dt>上場</dt><dd>東京証券取引所スタンダード市場（2025年12月19日上場）</dd>
+          <dt>URL</dt><dd><a href="https://ht-itc.jp" target="_blank" rel="noopener">https://ht-itc.jp<svg class="ico"><use href="#ext"/></svg></a></dd>
+        </dl>
+      </div>
+    </div>
+    <img class="building" src="image12.png" width="820" height="1220" alt="" loading="lazy">
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <a href="#" class="logo">SCS取得ラボ</a>
+    <nav><span>© 辻・本郷 ITコンサルティング株式会社</span><a href="#">利用規約</a><a href="#">プライバシーポリシー</a><a href="#contact">お問い合わせ</a></nav>
+  </div>
+</footer>
+
+<script>
+/* 動画一覧のスクロール */
+const track = document.getElementById("track");
+document.querySelector(".nav-btn.prev").addEventListener("click", () => track.scrollBy({left:-320, behavior:"smooth"}));
+document.querySelector(".nav-btn.next").addEventListener("click", () => track.scrollBy({left:320, behavior:"smooth"}));
+
+/* コンサルのボタンから来た場合は種別を切り替える */
+document.querySelector('[data-type="consult"]').addEventListener("click", () => {
+  document.querySelector('input[name="type"][value="consult"]').checked = true;
+});
+
+/* 送信先は未接続です。実際のフォーム送信先に差し替えてください。 */
+document.getElementById("contactForm").addEventListener("submit", function(e){
+  e.preventDefault();
+  const msg = document.getElementById("formMsg");
+  msg.style.color = "#D33A3A";
+  const empty = [...this.querySelectorAll("[required]")].find(el => !el.value.trim());
+  if (empty){ msg.textContent = "必須項目を入力してください。"; empty.focus(); return; }
+  const email = document.getElementById("email");
+  if (!email.checkValidity()){ msg.textContent = "メールアドレスの形式を確認してください。"; email.focus(); return; }
+  if (!document.getElementById("agree").checked){ msg.textContent = "利用規約とプライバシーポリシーへの同意が必要です。"; return; }
+  msg.style.color = "var(--brand)";
+  msg.textContent = "送信しました。通常1〜2営業日以内に担当者よりご連絡します。";
+});
+</script>
+</body>
+</html>
